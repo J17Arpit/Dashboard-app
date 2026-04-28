@@ -1,3 +1,5 @@
+'use client';
+
 import { CustomerField } from '@/app/lib/definitions';
 import Link from 'next/link';
 import {
@@ -8,9 +10,20 @@ import {
 } from '@heroicons/react/24/outline';
 import { Button } from '@/app/ui/button';
 
-export default function Form({ customers }: { customers: CustomerField[] }) {
+type CreateFormProps = {
+  customers: CustomerField[];
+  action: (formData: FormData) => void;
+};
+
+export default function Form({ customers, action }: CreateFormProps) {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const formData = new FormData(event.currentTarget);
+    // Client-side debug log visible in browser devtools.
+    console.log(Object.fromEntries(formData.entries()));
+  };
+
   return (
-    <form>
+    <form action={action} onSubmit={handleSubmit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
